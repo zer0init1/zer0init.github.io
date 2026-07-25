@@ -1,5 +1,714 @@
-<div align="center">
-<h1>
-HotCluster.com
-</h1>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotCluster — Infrastructure Architect & Team Lead</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #080a0f;
+            --bg-card: rgba(18, 22, 31, 0.6);
+            --bg-card-hover: rgba(26, 32, 44, 0.8);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-accent: #3b82f6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 32px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.03em;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+        }
+
+        .contact-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-btn:hover {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        /* Interactive Terminal Component */
+        .terminal-wrapper {
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: left;
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            font-family: var(--font-mono);
+            cursor: text;
+        }
+
+        .terminal-header {
+            background: #161b22;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            user-select: none;
+        }
+
+        .terminal-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .btn-close { background: #ff5f56; }
+        .btn-min { background: #ffbd2e; }
+        .btn-max { background: #27c93f; }
+
+        .terminal-title {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #c9d1d9;
+            line-height: 1.6;
+            min-height: 220px;
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .prompt {
+            color: var(--accent-cyan);
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .cmd {
+            color: #f0f6fc;
+        }
+
+        .output {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 12px;
+            border-left: 2px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .highlight {
+            color: var(--accent-blue);
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f0f6fc;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            flex: 1;
+            padding: 0;
+        }
+
+        /* Section Commons */
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            font-size: 1.05rem;
+        }
+
+        /* Core Pillars - 2x2 Grid Layout */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 36px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .pillar-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            background: var(--bg-card-hover);
+        }
+
+        .pillar-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            color: var(--accent-blue);
+        }
+
+        .pillar-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .pillar-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Tech Stack - 3 Column Grid for 9 Categories */
+        .tech-categories {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .tech-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-card h4 {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: var(--font-mono);
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        .tech-tag.featured {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--text-muted);
+        }
+
+        /* Contact Section Card */
+        .contact-section {
+            background: linear-gradient(180deg, var(--bg-card) 0%, rgba(18, 22, 31, 0.3) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 48px 32px;
+            text-align: center;
+            margin: 40px 0 60px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-email {
+            font-family: var(--font-mono);
+            font-size: 1.4rem;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 16px;
+            padding: 12px 28px;
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .contact-email:hover {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .tech-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 40px 0 20px;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">HOT<span>CLUSTER</span></div>
+            <a href="mailto:info@hotcluster.com" class="contact-btn">info@hotcluster.com</a>
+        </header>
+
+        <section class="hero">
+            <div class="badge">INFRASTRUCTURE ARCHITECT & TEAM LEAD</div>
+            <h1>High-Load Infrastructure & Platform Strategy</h1>
+            <p class="hero-desc">I design fault-tolerant distributed platforms, architect multi-region network infrastructure, and drive platform service development.</p>
+
+            <div class="terminal-wrapper" id="terminal" onclick="document.getElementById('term-input').focus()">
+                <div class="terminal-header">
+                    <div class="terminal-btn btn-close"></div>
+                    <div class="terminal-btn btn-min"></div>
+                    <div class="terminal-btn btn-max"></div>
+                    <div class="terminal-title">infra@hotcluster:~</div>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                    <div id="terminal-history"></div>
+                    <div class="terminal-input-line">
+                        <span class="prompt">zer0init@hotcluster:~$</span>
+                        <input type="text" id="term-input" class="terminal-input" autocomplete="off" spellcheck="false" autofocus>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pillars">
+            <h2 class="section-title">Core Pillars</h2>
+            <p class="section-subtitle">Fundamental areas of my engineering leadership & specialization</p>
+
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                    </div>
+                    <h3>High-Load Optimization</h3>
+                    <p>Identifying performance bottlenecks, deep profiling, Linux kernel tuning, and web server customization to handle millions of requests with minimal latency.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                    </div>
+                    <h3>Bare-Metal & Hybrid Infra</h3>
+                    <p>Designing custom hardware environments and hybrid clusters. Eliminating public cloud overspending without sacrificing flexibility or scalability.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <h3>Network & DDoS Protection</h3>
+                    <p>Configuring BGP routing, tuning L2/L3 network switches, and architecting distributed traffic filtering systems for flood mitigation.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                    </div>
+                    <h3>Observability & Zero Trust</h3>
+                    <p>Implementing end-to-end monitoring, query tracing, and strict Zero Trust Access Architecture models to protect critical production services.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="stack">
+            <h2 class="section-title">Technology Stack</h2>
+            <p class="section-subtitle">Core domains, tools, and technical competencies</p>
+
+            <div class="tech-categories">
+                <!-- 1. Executive & Leadership -->
+                <div class="tech-card">
+                    <h4>Executive & Leadership</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">Team Lead</span>
+                        <span class="tech-tag featured">Infrastructure Strategist</span>
+                        <span class="tech-tag featured">Hosting & Platform Architect</span>
+                    </div>
+                </div>
+
+                <!-- 2. Core Networking, BGP & L1 -->
+                <div class="tech-card">
+                    <h4>Core Networking, BGP & L1</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">Distributed Multi-Region PoPs</span>
+                        <span class="tech-tag featured">L1 Physical Layer Design</span>
+                        <span class="tech-tag">BGP</span>
+                        <span class="tech-tag">Anycast Networks</span>
+                        <span class="tech-tag">Arista</span>
+                        <span class="tech-tag">Juniper</span>
+                        <span class="tech-tag">BGP Telemetry & Monitoring</span>
+                    </div>
+                </div>
+
+                <!-- 3. Network Security & Anti-DDoS -->
+                <div class="tech-card">
+                    <h4>Network Security & Anti-DDoS</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Anti-DDoS Architecture</span>
+                        <span class="tech-tag">Zero Trust Access</span>
+                        <span class="tech-tag">Andrisoft Wanguard (Sensor & Mitigation)</span>
+                        <span class="tech-tag">Path.net</span>
+                        <span class="tech-tag featured"">Cloudflare</span>
+                        <span class="tech-tag">JumpServer</span>
+                        <span class="tech-tag">WireGuard</span>
+                        <span class="tech-tag">OpenVPN</span>
+                        <span class="tech-tag">Xray</span>
+                    </div>
+                </div>
+
+                <!-- 4. DNS & Domain Infrastructure -->
+                <div class="tech-card">
+                    <h4>DNS & Domain Infrastructure</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">High-Availability DNS Systems</span>
+                        <span class="tech-tag">PowerDNS Auth</span>
+                        <span class="tech-tag">Recursor</span>
+                        <span class="tech-tag">dnsdist</span>
+                        <span class="tech-tag">BIND</span>
+                        <span class="tech-tag">Domain Lifecycle Automation</span>
+                    </div>
+                </div>
+
+                <!-- 5. Virtualization & Containers -->
+                <div class="tech-card">
+                    <h4>Virtualization & Containers</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">Bare-Metal & Hybrid Compute</span>
+                        <span class="tech-tag">Proxmox VE</span>
+                        <span class="tech-tag">KVM / QEMU</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Ubuntu / Debian / RHEL</span>
+                    </div>
+                </div>
+
+                <!-- 6. High-Load Web & Databases -->
+                <div class="tech-card">
+                    <h4>High-Load Web & Databases</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">High-Load HTTP/HTTPS Optimization</span>
+                        <span class="tech-tag">Nginx</span>
+                        <span class="tech-tag">MySQL</span>
+                        <span class="tech-tag">VictoriaMetrics stack</span>
+                        <span class="tech-tag">RabbitMQ</span>
+                    </div>
+                </div>
+
+                <!-- 7. Storage Systems -->
+                <div class="tech-card">
+                    <h4>Storage Systems</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">Fault-Tolerant Storage Architecture</span>
+                        <span class="tech-tag">S3 Object Storage</span>
+                        <span class="tech-tag">ZFS</span>
+                        <span class="tech-tag">SAN / NAS</span>
+                        <span class="tech-tag">GlusterFS</span>
+                    </div>
+                </div>
+
+                <!-- 8. Automation, IaC & Workflows -->
+                <div class="tech-card">
+                    <h4>Automation, IaC & Workflows</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">Infrastructure as Code (IaC)</span>
+                        <span class="tech-tag">Ansible</span>
+                        <span class="tech-tag">GitLab CI/CD</span>
+                        <span class="tech-tag">n8n Workflow Automation</span>
+                    </div>
+                </div>
+
+                <!-- 9. Observability, Monitoring & Logs -->
+                <div class="tech-card">
+                    <h4>Observability, Monitoring & Logs</h4>
+                    <div class="tech-tags">
+                        <span class="tech-tag featured">Real-Time Telemetry & Flow Analysis</span>
+                        <span class="tech-tag">Zabbix</span>
+                        <span class="tech-tag">Log Management & Aggregation</span>
+                        <span class="tech-tag">Sentry</span>
+                        <span class="tech-tag">sFlow / NetFlow Analysis</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <h2 class="section-title">Get in Touch</h2>
+            <p class="section-subtitle" style="margin-bottom: 0;">Direct channel for engineering inquiry or technical correspondence</p>
+            <a href="mailto:info@hotcluster.com" class="contact-email">info@hotcluster.com</a>
+        </section>
+
+        <footer>
+            &copy; HotCluster. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        // Completely randomize all tags in each category
+        function randomizeTags() {
+            const containers = document.querySelectorAll('.tech-tags');
+            containers.forEach(container => {
+                const tags = Array.from(container.children);
+
+                // Fisher-Yates shuffle for ALL tags
+                for (let i = tags.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [tags[i], tags[j]] = [tags[j], tags[i]];
+                }
+
+                // Re-append in fully randomized order
+                container.innerHTML = '';
+                tags.forEach(tag => container.appendChild(tag));
+            });
+        }
+
+        const historyContainer = document.getElementById('terminal-history');
+        const termInput = document.getElementById('term-input');
+        const termBody = document.getElementById('terminal-body');
+
+        const initialCommand = 'hc-ctl status --verbose';
+        const statusOutput = `[<span class="highlight">OK</span>] Platform Strategy: Active<br>[<span class="highlight">OK</span>] BGP Transit & Anycast Paths: Optimal (Multi-DC)<br>[<span class="highlight">OK</span>] Bare-Metal & Storage Nodes: Operational<br>[<span class="highlight">OK</span>] Zero Trust Layer: Enforced`;
+
+        // Auto typing animation on load
+        window.addEventListener('DOMContentLoaded', () => {
+            randomizeTags();
+            let i = 0;
+            termInput.disabled = true;
+            function typeCmd() {
+                if (i < initialCommand.length) {
+                    termInput.value += initialCommand.charAt(i);
+                    i++;
+                    setTimeout(typeCmd, 40);
+                } else {
+                    setTimeout(() => {
+                        appendHistory(initialCommand, statusOutput);
+                        termInput.value = '';
+                        termInput.disabled = false;
+                        termInput.focus();
+                    }, 300);
+                }
+            }
+            setTimeout(typeCmd, 500);
+        });
+
+        function appendHistory(cmdText, outputText) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `<span class="prompt">zer0init1t@hotcluster:~$</span><span class="cmd">${escapeHtml(cmdText)}</span>`;
+            historyContainer.appendChild(line);
+
+            if (outputText) {
+                const out = document.createElement('div');
+                out.className = 'output';
+                out.innerHTML = outputText;
+                historyContainer.appendChild(out);
+            }
+            termBody.scrollTop = termBody.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        termInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = termInput.value.trim();
+                const cmdLower = command.toLowerCase();
+                let response = '';
+
+                if (command === '') return;
+
+                if (cmdLower === 'help') {
+                    response = 'Available commands: <span class="highlight">status</span>, <span class="highlight">stack</span>, <span class="highlight">contact</span>, <span class="highlight">clear</span>';
+                } else if (cmdLower === 'status' || cmdLower === 'hc-ctl status --verbose') {
+                    response = statusOutput;
+                } else if (cmdLower === 'stack') {
+                    response = 'Core Focus: Multi-Region PoPs, L1 Physical Layer, Anycast, Anti-DDoS Architecture, Proxmox VE, Ansible, n8n, Zabbix.';
+                } else if (cmdLower === 'contact') {
+                    response = 'Email: <a href="mailto:info@hotcluster.com" style="color:var(--accent-cyan)">info@hotcluster.com</a>';
+                } else if (cmdLower === 'clear') {
+                    historyContainer.innerHTML = '';
+                    termInput.value = '';
+                    return;
+                } else {
+                    response = `command not found: ${escapeHtml(command)}. Type <span class="highlight">help</span> for available commands.`;
+                }
+
+                appendHistory(command, response);
+                termInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
