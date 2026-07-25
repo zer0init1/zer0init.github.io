@@ -420,7 +420,7 @@
     <div class="container">
         <header>
             <div class="logo">HOT<span>CLUSTER</span></div>
-            <a href="mailto:info@hotcluster.com" class="contact-btn">info@hotcluster.com</a>
+            <!-- <a href="mailto:info@hotcluster.com" class="contact-btn">info@hotcluster.com</a> !-->
         </header>
 
         <section class="hero">
@@ -605,8 +605,8 @@
 
         <section class="contact-section">
             <h2 class="section-title">Get in Touch</h2>
-            <p class="section-subtitle" style="margin-bottom: 0;">Direct channel for engineering inquiry or technical correspondence</p>
-            <a href="mailto:info@hotcluster.com" class="contact-email">info@hotcluster.com</a>
+            <p class="section-subtitle" style="margin-bottom: 0;">I'm not looking for a job right now.</p>
+            <a href="mailto:info@hotcluster.com" class="contact-email">info@hotcluster.com</a>  |   <a href="https://github.com/zer0init1" class="contact-email">Github</a>
         </section>
 
         <footer>
@@ -665,7 +665,7 @@
         function appendHistory(cmdText, outputText) {
             const line = document.createElement('div');
             line.className = 'terminal-line';
-            line.innerHTML = `<span class="prompt">zer0init1t@hotcluster:~$</span><span class="cmd">${escapeHtml(cmdText)}</span>`;
+            line.innerHTML = `<span class="prompt">zer0init1@hotcluster:~$</span><span class="cmd">${escapeHtml(cmdText)}</span>`;
             historyContainer.appendChild(line);
 
             if (outputText) {
